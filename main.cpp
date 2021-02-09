@@ -3,8 +3,8 @@ using namespace std;
 
 class CSR {
 	protected:
-		int n; //The number rows of the original matrix
-		int m; //The number of columns of the original matrix
+		int numRows; //The number rows of the original matrix
+		int numCols; //The number of columns of the original matrix
 		int nonZeros; //The number of non-zeros in the original matrix
 		int* values; //value array assuming all are integers
 		int* rowPtr; //Array that contains number of non-zero elements in each row of the original matrix
@@ -12,9 +12,9 @@ class CSR {
 		//There may be others you may need
 	public:
 		CSR ( ); //default or empty constructor
-		CSR (CSR& martrixB); //copy constructor
-		CSR (int rows, int cols, int numNonZeros);
-		int getNumRows ( );
+		CSR (CSR& matrixB); //copy constructor
+		CSR (int rows, int cols, int numNonZeros); //non-default constructor
+		int getNumRows ( ); //return the number of rows
 		void addValue (int value); //add a new value in the values array
 		void addColumn (int col);//add a column in the colPos array
 		void addRow (int row); //add a row in the rowPtr array
@@ -26,20 +26,27 @@ class CSR {
 		//You may have other methods		
 };
 //some of the methods – Sridhar Radhakrishnan
+//Default constructor which sets all values to null or zero
 CSR::CSR ( ) {
-	n = 0;
-	m = 0;
+	numRows = 0;
+	numCols = 0;
+	nonZeros = 0;
 	values = NULL;
 	rowPtr = NULL;
 	colPos = NULL;
 }
+//Copy constructor that creates a copy of an existing CSR object
+CSR::CSR (CSR& matrixB){
+
+}
+//Non-defualt constructor that sets up the size of the arrays, but does not fill them in
 CSR::CSR (int rows, int cols, int numNonZeros) {
-	n = rows;
-	m = cols;
+	numRows = rows;
+	numCols = cols;
 	nonZeros = numNonZeros;
 	values = new int [nonZeros];
 	colPos = new int [nonZeros];
-	rowPtr = new int [n];
+	rowPtr = new int [numRows];
 }
 int* CSR::matrixVectorMultiply (int* inputVector){
 	int* outputVector = new int [n];
@@ -52,13 +59,14 @@ int* CSR::matrixVectorMultiply (int* inputVector){
 
 	return outputVector;
 }
+//Destructor in order to remove pointer variables in class
 CSR::~CSR ( ) {
 	if (values != NULL) delete [ ] values;
 	if (rowPtr != NULL) delete [ ] rowPtr;
 	if (colPos != NULL) delete [ ] colPos;
 	cout << "CSR Object Destroyed!!" << endl;
-	n = 0;
-	m = 0;
+	numRows = 0;
+	numCols = 0;
 	nonZeros = 0;
 }
 
